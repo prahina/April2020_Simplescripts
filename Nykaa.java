@@ -6,9 +6,13 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Nykaa {
 
@@ -19,6 +23,7 @@ public class Nykaa {
 		ChromeOptions options=new ChromeOptions();
 		options.addArguments("--diable-notifications");
 		Actions action = new Actions(driver);
+		WebDriverWait wait = new WebDriverWait(driver,10);
 
 		//1) Go to URL
 		driver.get("https://www.nykaa.com/");
@@ -27,6 +32,7 @@ public class Nykaa {
 
 		//2) Mouseover on Brands and Mouseover on Popular
 		action.moveToElement(driver.findElementByXPath("//a[text()='brands']")).perform();
+		Thread.sleep(5000);
 		action.moveToElement(driver.findElementByXPath("//a[text()='Popular']")).perform();
 
 		//3) Click L'Oreal Paris
@@ -48,25 +54,29 @@ public class Nykaa {
 		{
 			System.out.println("Not Matched");
 		}
-		Thread.sleep(5000);
+		
+		
 		//5) Click sort By and select customer top rated 
 		driver.findElementByXPath("//span[@class='pull-right']").click(); 
+		//driver.findElementByXPath("//span[text()='Sort By : ']").click();
+		Thread.sleep(3000); 
 		driver.findElementByXPath("//span[text()='customer top rated']").click();
+		Thread.sleep(3000); 
 
-
+		
+		
 		//6) Click Category and click Shampoo
-		driver.findElementByXPath("//div[text()='Category']").click();
-		//driver.findElementByXPath("(//div[@class='control__indicator'])[30]").click();
-		//driver.findElementByXPath("(//div[@class='control__indicator'])[36]").click();
-		driver.findElementByXPath("//label[@for='chk_Shampoo_undefined']/span").click(); 
-
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[text()='Category']"))).click(); 
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[@for='chk_Shampoo_undefined']/span"))).click();
+		
+		//driver.findElementByXPath("//div[text()='Category']").click();
+		//driver.findElementByXPath("//label[@for='chk_Shampoo_undefined']/span").click();
+		
 		//7) check whether the Filter is applied with Shampoo
 		String shampooSelected = driver.findElementByXPath("//li[text()='Shampoo']").getText();
 
 		if(shampooSelected.contains("Shampoo")) {
 			System.out.println("Shampoo is seected");
-
-
 		}
 		else
 		{
@@ -89,6 +99,7 @@ public class Nykaa {
 
 		//11) Click on ADD to BAG
 		driver.findElementByXPath("(//button[@class='combo-add-to-btn prdt-des-btn js--toggle-sbag nk-btn nk-btn-rnd atc-configurable m-content__product-list__cart-btn btn-disabled '])[1]").click();
+		
 		//12) Go to Shopping Bag
 		driver.findElementByXPath("//div[@class='AddBagIcon']").click();
 
@@ -108,21 +119,7 @@ public class Nykaa {
 		System.out.println(wmsg);
 
 		//17) Close all windows
-		driver.quit();	
-		driver.close();
-
-
-
-
-
-
-
-
-
-
-
-
-
+		driver.quit();
 
 	}
 
